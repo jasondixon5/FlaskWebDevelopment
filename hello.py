@@ -57,12 +57,30 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template("500.html"), 500
 
+# Define form class
 class NameForm(Form):
     name = StringField(
         "What is your name?",
         validators=[Required()])
     submit = SubmitField("Submit")
 
+# Define DB classes
+class Role(db.Model):
+    __tablename__ = "roles"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self):
+        return "<Role {}>".format(self.name)
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+
+    def __repr__(self):
+        return "<User {}>".format(self.username)
 
 if __name__ == "__main__":
     #app.run(debug=True)
