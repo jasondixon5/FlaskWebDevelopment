@@ -7,6 +7,7 @@ from flask_script import Manager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import Form
+from flask_sqlalchemy import SQLAlchemy
 import os
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required
@@ -15,6 +16,13 @@ app = Flask(__name__)
 # Retrieve config key or set to testing value if not set
 SECRET_KEY = os.environ.get("SECRET_KEY") or "TESTING_KEY"
 app.config["SECRET_KEY"] = SECRET_KEY
+# Set up DB
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = \
+    "sqlite:///" + os.path.join(basedir, "data.sqlite")
+app.config["SQLALCHEMY_COMMIT_ON_TEARDOWN"] = True
+db = SQLAlchemy(app)
+
 manager = Manager(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
