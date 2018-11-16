@@ -1,14 +1,15 @@
 from datetime import datetime
+import os
 
 from flask import Flask, render_template, session, redirect, url_for, flash
 # book import line appears to be deprecated
 # from flask.ext.script import Manager
-from flask_script import Manager, Shell
 from flask_bootstrap import Bootstrap
+from flask_migrate import Migrate, MigrateCommand
 from flask_moment import Moment
-from flask_wtf import Form
+from flask_script import Manager, Shell
 from flask_sqlalchemy import SQLAlchemy
-import os
+from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 
@@ -35,6 +36,8 @@ manager.add_command("shell",
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
