@@ -5,6 +5,7 @@ from flask import Flask, render_template, session, redirect, url_for, flash
 # book import line appears to be deprecated
 # from flask.ext.script import Manager
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail, Message
 from flask_migrate import Migrate, MigrateCommand
 from flask_moment import Moment
 from flask_script import Manager, Shell
@@ -17,6 +18,12 @@ app = Flask(__name__)
 # Retrieve config key or set to testing value if not set
 SECRET_KEY = os.environ.get("SECRET_KEY") or "TESTING_KEY"
 app.config["SECRET_KEY"] = SECRET_KEY
+MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or None
+app.config["MAIL_USERNAME"] = MAIL_USERNAME
+MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD") or None
+app.config["MAIL_PASSWORD"] = MAIL_PASSWORD
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
 # Set up DB
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = \
